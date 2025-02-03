@@ -6,13 +6,35 @@ This way, you can play with ANY friend who knows how to play UN- I mean, *UH, NO
 
 FREEDOM FOR EVERYONE!!!!!!! WOOOOOOOOOO
 
+.
 
+.
 
+.
 
+.
 
+.
 
+.
 
+.
 
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
 
 ## Special Thanks
 - [Humble Toymaker](https://www.youtube.com/@tservedio) on YouTube, for his Multiplayer Card Game tutorials, which were used as a base for this project.
