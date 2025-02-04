@@ -7,15 +7,12 @@ public enum ViewId
     MenuView,
     GameplayView,
     GameOverView,
+    WinView,
     SettingsView,
     PauseMenuView,
-    LevelSelectView,
     ModeSelectView,
-    ClassicModeSelectView,
-    ZenModeSelectView,
     TutorialView,
     CreditsView,
-    ShopView,
     AchievementsView,
     LeaderboardView
 }
