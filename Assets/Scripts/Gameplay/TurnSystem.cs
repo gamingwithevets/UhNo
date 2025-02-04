@@ -227,7 +227,7 @@ public class TurnSystem : MonoBehaviour
                     }
                     else if (wild)
                     {
-                        Debug.Log("[Opponent] Played card: " + wild.GetComponent<DisplayCard>().displayCard.color + " " + wild.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
+                        Debug.Log("[Opponent] Played wild card: " + wild.GetComponent<DisplayCard>().displayCard.color + " " + wild.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
                         wild.GetComponent<DisplayCard>().displayCard.color = colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
                         playerDeck.PlayCardO(wild);
                         played = true;
@@ -266,6 +266,7 @@ public class TurnSystem : MonoBehaviour
 
     public void SetWildTurn(CardColor color)
     {
+        Debug.Log("Wild Color: " + color);
         m_WildColor = color;
         m_IsWildTurn = true;
     }

@@ -77,8 +77,10 @@ public class CardToHandAnim : MonoBehaviour
             deckCard.transform.position = Vector3.Lerp(initialPosition, targetPosition, t);
             yield return null;
         }
-        GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().discardPile.Add(deckCard.GetComponent<DisplayCard>().displayCard);
-        if (deckCard.GetComponent<DisplayCard>().displayCard.color == CardColor.WILD) GameObject.Find("TurnSystem").GetComponent<TurnSystem>().SetWildTurn(deckCard.GetComponent<DisplayCard>().displayCard.color);
+
+        Card realCard = deckCard.GetComponent<DisplayCard>().displayCard;
+        GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().discardPile.Add(realCard);
+        if (realCard.num == CardNum.COLOR || realCard.num == CardNum.DRAW4) GameObject.Find("TurnSystem").GetComponent<TurnSystem>().SetWildTurn(realCard.color);
         Destroy(deckCard);
     }
 }
