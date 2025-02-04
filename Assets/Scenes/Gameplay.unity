@@ -3664,17 +3664,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f182c0ebab5d4a96107ec918c96a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayerTurn: 0
-  playerTurn: 0
-  opponentTurn: 0
-  playerPlayed: 0
-  skip: 0
-  turnText: {fileID: 284185941}
-  isWildTurn: 0
-  wildColor: 0
-  wildColorText: {fileID: 1607296640}
-  youWin: {fileID: 425717254}
-  youLose: {fileID: 1098661365}
+  m_TurnText: {fileID: 284185941}
+  m_WildColorText: {fileID: 1607296640}
+  m_YouWin: {fileID: 425717254}
+  m_YouLose: {fileID: 1098661365}
+  m_IsPlayerTurn: 0
+  m_PlayerPlayed: 0
+  m_Skip: 0
+  m_IsTurnWarningActive: 0
+  m_IsWildTurn: 0
+  m_PlayerTurn: 0
+  m_OpponentTurn: 0
+  m_TurnWarning: 
+  m_WildColor: 0
 --- !u!4 &1694816065
 Transform:
   m_ObjectHideFlags: 0
