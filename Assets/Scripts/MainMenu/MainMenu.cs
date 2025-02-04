@@ -7,6 +7,8 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject titleScreen;
     public TextMeshProUGUI pressStartText;
+    public TextMeshProUGUI versionText;
+
     public GameObject loading;
     public TextMeshProUGUI progressText;
     public bool fadeToggle = true;
@@ -14,7 +16,7 @@ public class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        versionText.text = "v" + Application.version;
     }
 
     // Update is called once per frame

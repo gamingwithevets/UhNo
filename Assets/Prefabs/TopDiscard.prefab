@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3770294378537193179}
   - component: {fileID: 5208671039804772146}
   - component: {fileID: 3514780042762550133}
+  - component: {fileID: -61456037692744647}
   m_Layer: 5
   m_Name: TopDiscard
   m_TagString: Clone
@@ -85,6 +86,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardBack: {fileID: 4467981485967221261}
+--- !u!114 &-61456037692744647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2323694045155422108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baceef403f7ed454c81ef7a699348491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialized: 0
+  deckCard: {fileID: 2323694045155422108}
+  animationDuration: 0.5
+  initialPosition: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2876719988558997062
 GameObject:
   m_ObjectHideFlags: 0

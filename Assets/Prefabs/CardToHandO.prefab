@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5208671039804772146}
   - component: {fileID: 3514780042762550133}
   - component: {fileID: -6444135320669103784}
+  - component: {fileID: -37944037766561121}
   m_Layer: 5
   m_Name: CardToHandO
   m_TagString: Clone
@@ -100,6 +101,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialized: 0
   hand: {fileID: 0}
+--- !u!114 &-37944037766561121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2323694045155422108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eeb16c1bbf82af40a463e03f2e61ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialized: 0
+  animating: 0
+  handName: HandO
+  deckCard: {fileID: 2323694045155422108}
+  hand: {fileID: 0}
+  animationDuration: 0.5
+  initialPosition: {x: 0, y: 0, z: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  originalParent: {fileID: 0}
 --- !u!1 &2876719988558997062
 GameObject:
   m_ObjectHideFlags: 0

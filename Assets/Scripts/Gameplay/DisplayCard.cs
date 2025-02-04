@@ -16,7 +16,6 @@ public class DisplayCard : MonoBehaviour
     public Image image;
 
     public bool cardBack;
-    public static bool staticCardBack;
 
     public GameObject hand;
     public int numberOfCardsInDeck;
@@ -38,17 +37,11 @@ public class DisplayCard : MonoBehaviour
 
         image.sprite = spriteImage == null ? Resources.Load<Sprite>("Cards/back") : spriteImage;
 
-        hand = GameObject.Find("Hand");
-        if (this.transform.parent == hand.transform.parent) {
-            cardBack = false;
-        }
-
-        staticCardBack = cardBack;
-
         if (this.tag == "Clone") {
             displayCard = PlayerDeck.staticDeck[numberOfCardsInDeck - 1];
             --numberOfCardsInDeck;
             --PlayerDeck.deckSize;
+            if (PlayerDeck.deckSize == 0) GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().RefillDeck();
             cardBack = false;
             this.tag = "Untagged";
         }

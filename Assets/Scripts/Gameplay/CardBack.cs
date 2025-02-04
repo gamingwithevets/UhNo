@@ -13,11 +13,14 @@ public class CardBack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (DisplayCard.staticCardBack) {
+        if (gameObject.GetComponent<DisplayCard>().cardBack) {
             cardBack.SetActive(true);
         } else {
             cardBack.SetActive(false);
         }
     }
+
+
+
 }
 
