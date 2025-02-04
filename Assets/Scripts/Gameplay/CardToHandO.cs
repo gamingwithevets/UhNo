@@ -19,14 +19,13 @@ public class CardToHandO : MonoBehaviour
     }
 
     IEnumerator StartAnim() {
-        yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().initialized);
+        yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().m_Initialized);
         gameObject.GetComponent<CardToHandAnim>().StartCardToHandAnim();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!played) gameObject.GetComponent<DisplayCard>().cardBack = true;
+        gameObject.GetComponent<DisplayCard>().cardBack = !played;
     }
-
 }

@@ -113,10 +113,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eeb16c1bbf82af40a463e03f2e61ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 0
-  animating: 0
-  deckCard: {fileID: 2323694045155422108}
-  hand: {fileID: 0}
+  m_Initialized: 0
+  m_Animating: 0
+  m_ForceStop: 0
+  m_HandName: Hand
+  m_DeckCard: {fileID: 2323694045155422108}
+  m_Hand: {fileID: 0}
   animationDuration: 0.5
   initialPosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}

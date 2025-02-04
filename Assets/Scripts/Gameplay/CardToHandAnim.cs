@@ -4,34 +4,35 @@ using System.Collections;
 
 public class CardToHandAnim : MonoBehaviour
 {
-    public bool initialized = false;
-    public bool animating = false;
+    public bool m_Initialized = false;
+    public bool m_Animating = false;
+    public bool m_Animated = false;
 
-    public string handName = "Hand";
+    public string m_HandName = "Hand";
 
-    public GameObject deckCard;
-    public GameObject hand;
+    public GameObject m_DeckCard;
+    public GameObject m_Hand;
     public float animationDuration = 0.5f;
     public Vector3 initialPosition;
     public Vector3 targetPosition;
     public Transform originalParent;
 
     public void Start() {
-        hand = GameObject.Find(handName);
+        m_Hand = GameObject.Find(m_HandName);
 
-        initialPosition = deckCard.transform.position;
-        originalParent = deckCard.transform.parent;
+        initialPosition = m_DeckCard.transform.position;
+        originalParent = m_DeckCard.transform.parent;
 
-        initialized = true;
+        m_Initialized = true;
     }
 
     public void Update() {
-        if (animating) {
-            deckCard.transform.SetParent(hand.transform);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(hand.GetComponent<RectTransform>());
-            targetPosition = deckCard.transform.position;
-            deckCard.transform.SetParent(originalParent);
-            deckCard.transform.position = initialPosition;
+        if (m_Animating) {
+            m_DeckCard.transform.SetParent(m_Hand.transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_Hand.GetComponent<RectTransform>());
+            targetPosition = m_DeckCard.transform.position;
+            m_DeckCard.transform.SetParent(originalParent);
+            m_DeckCard.transform.position = initialPosition;
         }
     }
 
@@ -45,7 +46,7 @@ public class CardToHandAnim : MonoBehaviour
 
     private IEnumerator AnimateObject()
     {
-        animating = true;
+        m_Animating = true;
         float timeElapsed = 0f;
 
         while (timeElapsed < animationDuration)
@@ -53,18 +54,21 @@ public class CardToHandAnim : MonoBehaviour
             timeElapsed += Time.deltaTime;
             float t = Mathf.Clamp01(timeElapsed / animationDuration);
 
-            deckCard.transform.position = Vector3.Lerp(initialPosition, targetPosition, t);
+            m_DeckCard.transform.position = Vector3.Lerp(initialPosition, targetPosition, t);
             yield return null;
         }
 
-        deckCard.transform.SetParent(hand.transform);
-        animating = false;
+        m_DeckCard.transform.SetParent(m_Hand.transform);
+        m_Animating = false;
+        m_Animated = true;
     }
 
     private IEnumerator AnimateObject2()
     {
-        deckCard.transform.SetParent(originalParent);
-        initialPosition = deckCard.transform.position;
+        yield return new WaitUntil(() => m_Animated);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_Hand.GetComponent<RectTransform>());
+        initialPosition = m_DeckCard.transform.position;
+        m_DeckCard.transform.SetParent(originalParent);
         targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         
         float timeElapsed = 0f;
@@ -74,13 +78,13 @@ public class CardToHandAnim : MonoBehaviour
             timeElapsed += Time.deltaTime;
             float t = Mathf.Clamp01(timeElapsed / animationDuration);
 
-            deckCard.transform.position = Vector3.Lerp(initialPosition, targetPosition, t);
+            m_DeckCard.transform.position = Vector3.Lerp(initialPosition, targetPosition, t);
             yield return null;
         }
 
-        Card realCard = deckCard.GetComponent<DisplayCard>().displayCard;
+        Card realCard = m_DeckCard.GetComponent<DisplayCard>().displayCard;
         GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().discardPile.Add(realCard);
         if (realCard.num == CardNum.COLOR || realCard.num == CardNum.DRAW4) GameObject.Find("TurnSystem").GetComponent<TurnSystem>().SetWildTurn(realCard.color);
-        Destroy(deckCard);
+        Destroy(m_DeckCard);
     }
 }

@@ -16,11 +16,11 @@ public class CardToHand : MonoBehaviour
     }
 
     void Update() {
-        gameObject.GetComponent<DisplayCard>().cardBack = false;
+        gameObject.GetComponent<DisplayCard>().cardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
     }
 
     IEnumerator StartAnim() {
-        yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().initialized);
+        yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().m_Initialized);
         gameObject.GetComponent<CardToHandAnim>().StartCardToHandAnim();
     }
 
