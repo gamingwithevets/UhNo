@@ -166,14 +166,9 @@ public class PlayerDeck : MonoBehaviour
 
     }
 
-<<<<<<< HEAD
     public void PlayCardO(GameObject card) {
         card.GetComponent<CardToHandO>().played = true;
         card.GetComponent<CardToHandO>().transform.rotation = Quaternion.identity;
-=======
-    public void PlayCardO(GameObject card)
-    {
->>>>>>> dev/severus
         opponentClones.Remove(card);
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
     }
