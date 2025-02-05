@@ -44,6 +44,10 @@ public class TurnSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        m_TurnText.text = "";
+        m_WildColorText.text = "";
+        m_TurnText.gameObject.SetActive(true);
+        m_WildColorText.gameObject.SetActive(true);
         m_IsPlayerTurn = false;
         m_PlayerTurn = 0;
         m_OpponentTurn = 0;
@@ -96,7 +100,6 @@ public class TurnSystem : MonoBehaviour
                     break;
                 default:
                     m_WildColorText.text = "COLOR: " + m_WildColor.ToString();
-
                     break;
             }
         }

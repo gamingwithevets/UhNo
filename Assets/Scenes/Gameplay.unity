@@ -1329,7 +1329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &284185939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1337,16 +1337,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284185938}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1029578281}
+  m_Father: {fileID: 581248680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 130.47406, y: -152}
+  m_AnchoredPosition: {x: 130.47406, y: 1274.0486}
   m_SizeDelta: {x: 587.0519, y: 150}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &284185940
@@ -2442,6 +2442,7 @@ RectTransform:
   - {fileID: 594985307}
   - {fileID: 176165710}
   - {fileID: 1029578281}
+  - {fileID: 284185939}
   - {fileID: 1607296639}
   - {fileID: 1270162782}
   - {fileID: 425717255}
@@ -3022,7 +3023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultParent: {fileID: 219313127}
-  _defaultViewId: 0
+  _defaultViewId: 1
   _views: []
   _viewOrder: []
 --- !u!1 &1029578280
@@ -3055,8 +3056,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 284185939}
+  m_Children: []
   m_Father: {fileID: 581248680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -4771,7 +4771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1607296639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4811,7 +4811,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WHAT ARE YOU DOING? SNOOPING AROUND IN THE GAME FILES?
+  m_text: 'WHAT ARE YOU DOING?
+
+    SNOOPING AROUND IN THE
+
+    GAME FILES?'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 791a0e06d2fd1534e902bd4c48d4acd0, type: 2}
   m_sharedMaterial: {fileID: 6716201962023427700, guid: 791a0e06d2fd1534e902bd4c48d4acd0, type: 2}
@@ -5535,7 +5539,7 @@ GameObject:
   - component: {fileID: 2081048400}
   - component: {fileID: 2081048399}
   m_Layer: 5
-  m_Name: Border (1)
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
