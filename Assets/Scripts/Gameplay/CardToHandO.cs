@@ -11,7 +11,7 @@ public class CardToHandO : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        transform.SetParent(GameObject.Find("Canvas").transform);
+        transform.SetParent(FindFirstObjectByType<GameplayView>().transform);
         transform.position = GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().cardInDeckTop.transform.position;
         transform.rotation = Quaternion.Euler(0, 0, 180);
         StartCoroutine(StartAnim());
