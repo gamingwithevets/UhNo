@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum ViewId
 {
-    MenuView,
+    MainMenuView,
     GameplayView,
+    SettingsView,
     GameOverView,
     WinView,
-    SettingsView,
     PauseMenuView,
     ModeSelectView,
     TutorialView,
