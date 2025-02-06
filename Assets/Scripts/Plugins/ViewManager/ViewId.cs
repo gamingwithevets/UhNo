@@ -11,6 +11,7 @@ public enum ViewId
     WinView,
     PauseMenuView,
     ModeSelectView,
+    HouseRuleSelectView,
     TutorialView,
     CreditsView,
     AchievementsView,

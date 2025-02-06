@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class SettingsView : View
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnButtonBack()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        ViewManager.Instance.ShowView(ViewId.MainMenuView);
     }
 }
