@@ -41,7 +41,7 @@ public class DisplayCard : MonoBehaviour
             displayCard = PlayerDeck.staticDeck[numberOfCardsInDeck - 1];
             --numberOfCardsInDeck;
             --PlayerDeck.deckSize;
-            if (PlayerDeck.deckSize == 0) GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().RefillDeck();
+            if (PlayerDeck.deckSize == 0) PlayerDeck.GetInstance().RefillDeck();
             cardBack = false;
             this.tag = "Untagged";
         }

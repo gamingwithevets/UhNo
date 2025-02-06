@@ -6,6 +6,10 @@ public class ColorPicker : MonoBehaviour
 
     public bool active = false;
 
+    public static ColorPicker GetInstance() {
+        return GameObject.Find("ColorPicker").GetComponent<ColorPicker>();
+    }
+
     public void Reset() {
         active = false;
         transform.GetChild(0).gameObject.SetActive(false);

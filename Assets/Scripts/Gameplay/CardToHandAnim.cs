@@ -7,6 +7,7 @@ public class CardToHandAnim : MonoBehaviour
     public bool m_Initialized = false;
     public bool m_Animating = false;
     public bool m_Animated = false;
+    public bool m_Destroyed = false;
 
     public string m_HandName = "Hand";
 
@@ -83,8 +84,9 @@ public class CardToHandAnim : MonoBehaviour
         }
 
         Card realCard = m_DeckCard.GetComponent<DisplayCard>().displayCard;
-        GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>().discardPile.Add(realCard);
-        if (realCard.num == CardNum.COLOR || realCard.num == CardNum.DRAW4) GameObject.Find("TurnSystem").GetComponent<TurnSystem>().SetWildTurn(realCard.color);
+        PlayerDeck.GetInstance().discardPile.Add(realCard);
+        if (realCard.num == CardNum.COLOR || realCard.num == CardNum.DRAW4) TurnSystem.GetInstance().SetWildTurn(realCard.color);
         Destroy(m_DeckCard);
+        m_Destroyed = true;
     }
 }

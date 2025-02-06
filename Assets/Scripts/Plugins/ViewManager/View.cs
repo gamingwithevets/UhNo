@@ -100,7 +100,7 @@ public abstract class View : MonoBehaviour
         if (fadeManager == null)
         {
             Debug.LogWarning("FadeManager not found. Attempting to locate...");
-            fadeManager = FindObjectOfType<FadeManager>();
+            fadeManager = FindFirstObjectByType<FadeManager>();
             if (fadeManager == null)
             {
                 Debug.LogError("FadeManager is missing in the scene.");

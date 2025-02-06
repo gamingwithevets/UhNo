@@ -4,7 +4,7 @@ public class MainMenuView : View
 {
     public void OnButtonStart()
     {
-        ViewManager.Instance.ShowView(ViewId.GameplayView);
+        ViewManager.Instance.ShowView(ViewId.ModeSelectView);
     }
 
     public void OnButtonSettings()
@@ -12,13 +12,9 @@ public class MainMenuView : View
         ViewManager.Instance.ShowView(ViewId.SettingsView);
     }
 
-    public void OnButtonExit()
+    public void OnButtonGitHub()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        Application.OpenURL("https://github.com/gamingwithevets/UhNo");
     }
 
 }

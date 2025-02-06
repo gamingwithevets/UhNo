@@ -30,8 +30,20 @@ public class PlayerDeck : MonoBehaviour
 
     public List<Card> discardPile = new List<Card>();
 
-    public int cardsToDraw = 0;
-    public bool drawed = false;
+    public static int cardsToDraw = 0;
+    public static bool drawed = false;
+
+    [SerializeField] private bool m_ReadyForNextMove = true;
+
+    public bool ReadyForNextMove {
+        get => m_ReadyForNextMove;
+        set => m_ReadyForNextMove = value;
+    }
+
+    public static PlayerDeck GetInstance() {
+        return GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>();
+
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,13 +56,15 @@ public class PlayerDeck : MonoBehaviour
 
     public void Reset()
     {
-        GameObject.Find("TurnSystem").GetComponent<TurnSystem>().Reset();
-        GameObject.Find("ColorPicker").GetComponent<ColorPicker>().Reset();
+        TurnSystem.GetInstance().Reset();
+        ColorPicker.GetInstance().Reset();
         Destroy(topDiscard);
         discardPile.Clear();
         cardsToDraw = 0;
         drawed = false;
+        m_ReadyForNextMove = true;
         foreach (GameObject card in playerClones) Destroy(card);
+
         foreach (GameObject card in opponentClones) Destroy(card);
         playerClones.Clear();
         opponentClones.Clear();
@@ -62,7 +76,6 @@ public class PlayerDeck : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-
     {
         if (deck.Count > deckSize) deck.RemoveRange(deckSize, deck.Count - deckSize);
         staticDeck = deck;
@@ -137,10 +150,12 @@ public class PlayerDeck : MonoBehaviour
         discardPile.Add(card);
         if (card.color == CardColor.WILD) OpenColorPicker();
         if (card.num == CardNum.DRAW2) cardsToDraw += 2;
+        if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.GetInstance().Skip = true;
 
         TurnSystem turnSystem = GameObject.Find("TurnSystem").GetComponent<TurnSystem>();
         turnSystem.EndOpponentTurn();
     }
+
 
     public void Shuffle()
     {
@@ -156,21 +171,27 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    public void PlayCard(GameObject card)
-    {
+    public IEnumerator PlayCard(GameObject card) {
+        m_ReadyForNextMove = false;
         Card realCard = card.GetComponent<DisplayCard>().displayCard;
         playerClones.Remove(card);
+        Debug.Log("[Player] Waiting for animation");
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
+        yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
+        Debug.Log("[Player] Animation finished");
         if (realCard.color == CardColor.WILD) OpenColorPicker();
-        else GameObject.Find("TurnSystem").GetComponent<TurnSystem>().IsWildTurn = false;
-
+        else TurnSystem.GetInstance().IsWildTurn = false;
     }
 
-    public void PlayCardO(GameObject card) {
+    public IEnumerator PlayCardO(GameObject card) {
         card.GetComponent<CardToHandO>().played = true;
         card.GetComponent<CardToHandO>().transform.rotation = Quaternion.identity;
         opponentClones.Remove(card);
+        Debug.Log("[Opponent] Waiting for animation");
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
+        yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
+        Debug.Log("[Opponent] Animation finished");
+        m_ReadyForNextMove = true;
     }
 
     public bool isCardPlayable(Card card)
@@ -180,24 +201,26 @@ public class PlayerDeck : MonoBehaviour
             card.num == discardPile.Last().num;
     }
 
-
     public void DrawCard()
     {
+        m_ReadyForNextMove = false;
         Debug.Log("[Player] Drawing card");
-        TurnSystem turnSystem = GameObject.Find("TurnSystem").GetComponent<TurnSystem>();
         Card deckCard = deck[deckSize - 1];
-        if (turnSystem.IsPlayerTurn && (cardsToDraw > 0 || (cardsToDraw == 0 && !drawed)))
+        if (TurnSystem.GetInstance().IsPlayerTurn && (cardsToDraw > 0 || (cardsToDraw == 0 && !drawed)))
         {
-
             playerClones.Add(Instantiate(cardToHand, transform.position, transform.rotation));
             drawed = true;
         }
         if (cardsToDraw > 0)
         {
             --cardsToDraw;
-            if (cardsToDraw == 0) turnSystem.EndPlayerTurn();
+            if (cardsToDraw == 0) TurnSystem.GetInstance().EndPlayerTurn();
+            else m_ReadyForNextMove = true;
         }
-        else if (!isCardPlayable(deckCard)) turnSystem.EndPlayerTurn();
+        else {
+            if (!isCardPlayable(deckCard)) TurnSystem.GetInstance().EndPlayerTurn();
+            else m_ReadyForNextMove = true;
+        }
     }
 
     public void DrawCardO()
@@ -217,8 +240,6 @@ public class PlayerDeck : MonoBehaviour
 
     void OpenColorPicker()
     {
-        ColorPicker colorPicker = GameObject.Find("ColorPicker").GetComponent<ColorPicker>();
-        colorPicker.PickColor();
+        ColorPicker.GetInstance().PickColor();
     }
-
 }
