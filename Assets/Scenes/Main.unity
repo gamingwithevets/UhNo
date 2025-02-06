@@ -1374,8 +1374,7 @@ MonoBehaviour:
   opponentClones: []
   hand: {fileID: 0}
   discardPile: []
-  cardsToDraw: 0
-  drawed: 0
+  m_ReadyForNextMove: 1
 --- !u!4 &269562795
 Transform:
   m_ObjectHideFlags: 0
@@ -1469,7 +1468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &284185939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7195,7 +7194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1607296639
 RectTransform:
   m_ObjectHideFlags: 0
