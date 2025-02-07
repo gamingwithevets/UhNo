@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Linq;
+using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class ColorPicker : MonoBehaviour
 {
 
-    public bool active = false;
-    public bool pickedColor = false;
+    int cardsToDraw;
 
     public static ColorPicker GetInstance()
     {
@@ -15,14 +15,12 @@ public class ColorPicker : MonoBehaviour
 
     public void Reset()
     {
-        active = false;
         transform.GetChild(0).gameObject.SetActive(false);
     }
 
-    public void PickColor(bool red = true, bool blue = true, bool green = true, bool yellow = true)
+    public void PickColor(int CardsToDraw = 0, bool red = true, bool blue = true, bool green = true, bool yellow = true)
     {
-        pickedColor = false;
-        active = true;
+        cardsToDraw = CardsToDraw;
 
         transform.SetAsLastSibling();
         transform.GetChild(0).gameObject.SetActive(true);
@@ -30,16 +28,17 @@ public class ColorPicker : MonoBehaviour
         transform.GetChild(0).GetChild(1).GetChild(1).gameObject.SetActive(blue);
         transform.GetChild(0).GetChild(1).GetChild(2).gameObject.SetActive(green);
         transform.GetChild(0).GetChild(1).GetChild(3).gameObject.SetActive(yellow);
-        Debug.Log("Color picker active");
     }
 
     public void Pick(int color)
     {
+        PlayerDeck playerDeck = PlayerDeck.GetInstance();
+        TurnSystem turnSystem = TurnSystem.GetInstance();
         transform.GetChild(0).gameObject.SetActive(false);
-        PlayerDeck.GetInstance().discardPile.Last().color = (CardColor)color;
-        TurnSystem.GetInstance().SetWildTurn((CardColor)color);
-        active = false;
-        Debug.Log("Picked color");
-        pickedColor = true;
+        playerDeck.discardPile.Last().color = (CardColor)color;
+        turnSystem.SetWildTurn((CardColor)color);
+        turnSystem.PlayerPlayed = true;
+        PlayerDeck.cardsToDraw += cardsToDraw;
+        turnSystem.EndPlayerTurn();
     }
 }

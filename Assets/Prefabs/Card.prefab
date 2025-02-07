@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Num: 0
   m_Color: 0
   m_Image: {fileID: 1965732722980244532}
-  m_CardBack: {fileID: 4029521998391347633}
+  m_CardBack: {fileID: 4467981485967221261}
   m_IsCardBack: 0
   m_HandOfPlayer: {fileID: 0}
   m_NumberOfCardsInDeck: 0
@@ -246,5 +246,10 @@ PrefabInstance:
 --- !u!224 &4029521998391347633 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4398009954159570605, guid: f4eaf36666daf9f4fad710d847fb8248, type: 3}
+  m_PrefabInstance: {fileID: 784578688005777180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4467981485967221261 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3810633892221945105, guid: f4eaf36666daf9f4fad710d847fb8248, type: 3}
   m_PrefabInstance: {fileID: 784578688005777180}
   m_PrefabAsset: {fileID: 0}
