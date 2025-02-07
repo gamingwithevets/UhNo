@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        m_GameEnviroment.SetActive(false);
     }
 
     public void InitGame()
