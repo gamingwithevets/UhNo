@@ -98,9 +98,6 @@ public class TurnSystem : MonoBehaviour
         {
             switch (m_WildColor)
             {
-                case CardColor.RED:
-                    m_WildColorText.text = "COLOR: <mark=#ffff0080><color=#FF0000>RED</color></mark>";
-                    break;
                 case CardColor.BLUE:
                     m_WildColorText.text = "COLOR: <color=#007EFF>BLUE</color>";
                     break;
@@ -160,8 +157,8 @@ public class TurnSystem : MonoBehaviour
 
     IEnumerator OpponentAI()
     {
-        yield return new WaitUntil(() => !ColorPicker.GetInstance().active);
-
+        int cardsToDraw = 0;
+        
         yield return new WaitForSeconds(0.5f);
         Card topDiscard = PlayerDeck.GetInstance().discardPile.Last();
         switch (topDiscard.num)
@@ -188,14 +185,19 @@ public class TurnSystem : MonoBehaviour
                     }
                     if (cardToPlay)
                     {
-                        Debug.Log("[Opponent] Played card: " + cardToPlay.GetComponent<DisplayCard>().displayCard.color + " " + cardToPlay.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
                         if (cardToPlay.GetComponent<DisplayCard>().displayCard.color == CardColor.WILD) {
-                            cardToPlay.GetComponent<DisplayCard>().displayCard.color = colors.Count > 0 ? colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First() : (CardColor)Random.Range(0, 4);
+                            Debug.Log("[Opponent] Played wild card: " + cardToPlay.GetComponent<DisplayCard>().displayCard.color + " " + cardToPlay.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
+                            CardColor color = colors.Count > 0 ? colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First() : (CardColor)Random.Range(0, 4);
+                            cardToPlay.GetComponent<DisplayCard>().displayCard.color = color;
+                            yield return PlayerDeck.GetInstance().PlayCardO(cardToPlay);
+                            SetWildTurn(color);
+                        } else {
+                            Debug.Log("[Opponent] Played card: " + cardToPlay.GetComponent<DisplayCard>().displayCard.color + " " + cardToPlay.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
+                            yield return PlayerDeck.GetInstance().PlayCardO(cardToPlay);
                         }
-                        yield return PlayerDeck.GetInstance().PlayCardO(cardToPlay);
                         topDiscard = PlayerDeck.GetInstance().discardPile.Last();
-                        if (topDiscard.num == CardNum.DRAW2) PlayerDeck.cardsToDraw += 2;
-                        else if (topDiscard.num == CardNum.DRAW4) PlayerDeck.cardsToDraw += 4;
+                        if (topDiscard.num == CardNum.DRAW2) cardsToDraw = 2;
+                        else if (topDiscard.num == CardNum.DRAW4) cardsToDraw = 4;
 
                     }
                     else
@@ -203,8 +205,7 @@ public class TurnSystem : MonoBehaviour
                         while (PlayerDeck.cardsToDraw > 0)
                         {
                             PlayerDeck.cardsToDraw -= 1;
-                            PlayerDeck.GetInstance().DrawCardO();
-                            yield return new WaitForSeconds(0.25f);
+                            yield return PlayerDeck.GetInstance().DrawCardO();
                         }
                         PlayerDeck.GetInstance().ReadyForNextMove = true;
                     }
@@ -236,7 +237,7 @@ public class TurnSystem : MonoBehaviour
                     {
                         Debug.Log("[Opponent] Played card: " + cardToPlay.GetComponent<DisplayCard>().displayCard.color + " " + cardToPlay.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
                         if (cardToPlay.GetComponent<DisplayCard>().displayCard.num == CardNum.SKIP || cardToPlay.GetComponent<DisplayCard>().displayCard.num == CardNum.REVERSE) m_Skip = true;
-                        if (cardToPlay.GetComponent<DisplayCard>().displayCard.num == CardNum.DRAW2) PlayerDeck.cardsToDraw += 2;
+                        if (cardToPlay.GetComponent<DisplayCard>().displayCard.num == CardNum.DRAW2) cardsToDraw = 2;
                         yield return PlayerDeck.GetInstance().PlayCardO(cardToPlay);
                         played = true;
                         m_IsWildTurn = false;
@@ -244,26 +245,36 @@ public class TurnSystem : MonoBehaviour
                     else if (wild)
                     {
                         Debug.Log("[Opponent] Played wild card: " + wild.GetComponent<DisplayCard>().displayCard.color + " " + wild.GetComponent<DisplayCard>().displayCard.num + " on " + topDiscard.color + " " + topDiscard.num);
-                        wild.GetComponent<DisplayCard>().displayCard.color = colors.Count > 0 ? colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First() : (CardColor)Random.Range(0, 4);
-                        if (wild.GetComponent<DisplayCard>().displayCard.num == CardNum.DRAW4) PlayerDeck.cardsToDraw += 4;
+                        CardColor color = colors.Count > 0 ? colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First() : (CardColor)Random.Range(0, 4);
+                        wild.GetComponent<DisplayCard>().displayCard.color = color;
+                        if (wild.GetComponent<DisplayCard>().displayCard.num == CardNum.DRAW4) cardsToDraw = 4;
                         yield return PlayerDeck.GetInstance().PlayCardO(wild);
+                        SetWildTurn(color);
                         played = true;
                     }
                     else
                     {
-                        PlayerDeck.GetInstance().DrawCardO();
+                        yield return PlayerDeck.GetInstance().DrawCardO();
                         Card drawnCard = PlayerDeck.GetInstance().opponentClones.Last().GetComponent<DisplayCard>().displayCard;
                         if (PlayerDeck.GetInstance().isCardPlayable(drawnCard))
                         {
-                            yield return new WaitForSeconds(0.5f);
-                            Debug.Log("[Opponent] Played card: " + drawnCard.color + " " + drawnCard.num + " on " + topDiscard.color + " " + topDiscard.num);
-                            yield return PlayerDeck.GetInstance().PlayCardO(PlayerDeck.GetInstance().opponentClones.Last());
+                            if (drawnCard.color == CardColor.WILD) {
+                                Debug.Log("[Opponent] Played wild card: " + drawnCard.color + " " + drawnCard.num + " on " + topDiscard.color + " " + topDiscard.num);
+                                CardColor color = colors.Count > 0 ? colors.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First() : (CardColor)Random.Range(0, 4);
+                                PlayerDeck.GetInstance().opponentClones.Last().GetComponent<DisplayCard>().displayCard.color = color;
+                                yield return PlayerDeck.GetInstance().PlayCardO(PlayerDeck.GetInstance().opponentClones.Last());
+                                SetWildTurn(color);
+                            } else {                         
+                                Debug.Log("[Opponent] Played card: " + drawnCard.color + " " + drawnCard.num + " on " + topDiscard.color + " " + topDiscard.num);
+                                yield return PlayerDeck.GetInstance().PlayCardO(PlayerDeck.GetInstance().opponentClones.Last());
+                            }
                         } else PlayerDeck.GetInstance().ReadyForNextMove = true;
                         played = true;
                     }
                 }
                 break;
         }
+        PlayerDeck.cardsToDraw += cardsToDraw;
         EndOpponentTurn();
     }
 

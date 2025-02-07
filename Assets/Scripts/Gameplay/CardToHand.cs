@@ -34,10 +34,12 @@ public class CardToHand : MonoBehaviour
             if (PlayerDeck.GetInstance().isCardPlayable(card))
             {
                 Debug.Log("[Player] Played card: " + card.color + " " + card.num + " on " + topDiscard.color + " " + topDiscard.num);
-                if (card.num == CardNum.DRAW2) PlayerDeck.cardsToDraw += 2;
-                else if (card.num == CardNum.DRAW4) PlayerDeck.cardsToDraw += 4;
+                int cardsToDraw = 0;
+                if (card.num == CardNum.DRAW2) cardsToDraw = 2;
+                else if (card.num == CardNum.DRAW4) cardsToDraw = 4;
                 yield return PlayerDeck.GetInstance().PlayCard(gameObject);
                 TurnSystem.GetInstance().PlayerPlayed = true;
+                PlayerDeck.cardsToDraw += cardsToDraw;
                 TurnSystem.GetInstance().EndPlayerTurn();
             }
             else
