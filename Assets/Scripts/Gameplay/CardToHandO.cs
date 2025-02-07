@@ -5,10 +5,8 @@ public class CardToHandO : MonoBehaviour
 {
     public bool initialized = false;
     public bool played = false;
-
     public GameObject hand;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         transform.SetParent(FindFirstObjectByType<GameplayView>().transform);
@@ -18,14 +16,14 @@ public class CardToHandO : MonoBehaviour
         initialized = true;
     }
 
-    IEnumerator StartAnim() {
+    IEnumerator StartAnim()
+    {
         yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().m_Initialized);
         gameObject.GetComponent<CardToHandAnim>().StartCardToHandAnim();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        gameObject.GetComponent<DisplayCard>().cardBack = !played;
+        gameObject.GetComponent<DisplayCard>().IsCardBack = !played;
     }
 }

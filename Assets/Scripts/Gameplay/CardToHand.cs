@@ -6,20 +6,21 @@ public class CardToHand : MonoBehaviour
 {
     public bool initialized = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        transform.SetParent(GameObject.FindFirstObjectByType<GameplayView>().transform);
+        transform.SetParent(FindFirstObjectByType<GameplayView>().transform);
         transform.position = PlayerDeck.GetInstance().cardInDeckTop.transform.position;
         StartCoroutine(StartAnim());
         initialized = true;
     }
 
-    void Update() {
-        gameObject.GetComponent<DisplayCard>().cardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
+    void Update()
+    {
+        gameObject.GetComponent<DisplayCard>().IsCardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
     }
 
-    IEnumerator StartAnim() {
+    IEnumerator StartAnim()
+    {
         yield return new WaitUntil(() => gameObject.GetComponent<CardToHandAnim>().m_Initialized);
         gameObject.GetComponent<CardToHandAnim>().StartCardToHandAnim();
     }
@@ -27,7 +28,7 @@ public class CardToHand : MonoBehaviour
     IEnumerator PlayCardCoroutine()
     {
         if (!initialized || !PlayerDeck.GetInstance().ReadyForNextMove) yield break;
-        Card card = gameObject.GetComponent<DisplayCard>().displayCard;
+        Card card = gameObject.GetComponent<DisplayCard>().CardInfo;
         if (TurnSystem.GetInstance().IsPlayerTurn && (PlayerDeck.cardsToDraw == 0 || (PlayerDeck.cardsToDraw > 0 && !PlayerDeck.drawed && (card.num == CardNum.DRAW2 || card.num == CardNum.DRAW4))))
         {
             Card topDiscard = PlayerDeck.GetInstance().discardPile.Last();
@@ -51,7 +52,8 @@ public class CardToHand : MonoBehaviour
         }
     }
 
-    public void PlayCard() {
+    public void PlayCard()
+    {
         StartCoroutine(PlayCardCoroutine());
     }
 }
