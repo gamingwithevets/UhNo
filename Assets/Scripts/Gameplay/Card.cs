@@ -20,13 +20,14 @@ public class Card
 {
     public CardNum num;
     public CardColor color;
-    public Sprite spriteImage;
+    public Sprite sprite;
 
     public Card() { }
 
-    public Card(CardNum Num, CardColor Color, Sprite SpriteImage) {
+    public Card(CardNum Num, CardColor Color, Sprite Sprite)
+    {
         num = Num;
         color = Color;
-        spriteImage = SpriteImage;
+        sprite = Sprite;
     }
 }

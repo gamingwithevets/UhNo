@@ -61,18 +61,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6827a23f8cc73445b5853c2d62e5d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 0
-  displayCard:
+  m_Initialized: 0
+  m_CardInfo:
     num: 0
     color: 0
-    spriteImage: {fileID: 0}
-  num: 0
-  color: 0
-  spriteImage: {fileID: 0}
-  image: {fileID: 1965732722980244532}
-  cardBack: 0
-  hand: {fileID: 0}
-  numberOfCardsInDeck: 0
+    sprite: {fileID: 0}
+  m_Num: 0
+  m_Color: 0
+  m_Sprite: {fileID: 0}
+  m_Image: {fileID: 1965732722980244532}
+  m_CardBack: {fileID: 4029521998391347633}
+  m_IsCardBack: 0
+  m_HandOfPlayer: {fileID: 0}
+  m_NumberOfCardsInDeck: 0
 --- !u!114 &3514780042762550133
 MonoBehaviour:
   m_ObjectHideFlags: 0
