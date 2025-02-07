@@ -4,23 +4,15 @@ public class CardBack : MonoBehaviour
 {
     public GameObject cardBack;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (gameObject.GetComponent<DisplayCard>().cardBack) {
+        if (gameObject.GetComponent<DisplayCard>().IsCardBack)
+        {
             cardBack.SetActive(true);
-        } else {
+        }
+        else
+        {
             cardBack.SetActive(false);
         }
     }
-
-
-
 }
-

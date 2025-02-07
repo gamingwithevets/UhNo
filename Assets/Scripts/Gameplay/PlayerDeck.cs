@@ -7,7 +7,6 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerDeck : MonoBehaviour
-
 {
     public static int deckSize;
     public List<Card> deck = new List<Card>();
@@ -35,12 +34,14 @@ public class PlayerDeck : MonoBehaviour
 
     [SerializeField] private bool m_ReadyForNextMove = true;
 
-    public bool ReadyForNextMove {
+    public bool ReadyForNextMove
+    {
         get => m_ReadyForNextMove;
         set => m_ReadyForNextMove = value;
     }
 
-    public static PlayerDeck GetInstance() {
+    public static PlayerDeck GetInstance()
+    {
         return GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>();
 
     }
@@ -56,8 +57,6 @@ public class PlayerDeck : MonoBehaviour
 
     public void Reset()
     {
-        TurnSystem.GetInstance().Reset();
-        ColorPicker.GetInstance().Reset();
         Destroy(topDiscard);
         discardPile.Clear();
         cardsToDraw = 0;
@@ -109,7 +108,7 @@ public class PlayerDeck : MonoBehaviour
         if (discardPile.Count > 0)
         {
             topDiscard.SetActive(true);
-            topDiscard.GetComponent<DisplayCard>().displayCard = discardPile[discardPile.Count - 1];
+            topDiscard.GetComponent<DisplayCard>().CardInfo = discardPile[discardPile.Count - 1];
         }
     }
 
@@ -141,14 +140,15 @@ public class PlayerDeck : MonoBehaviour
         topDiscard = Instantiate(topd, new Vector3(Screen.width / 2, Screen.height / 2, 0), Quaternion.identity);
         topDiscard.transform.position = cardInDeckTop.transform.position;
         topDiscard.transform.SetParent(gameplayView);
-        yield return new WaitUntil(() => topDiscard.GetComponent<DisplayCard>().initialized);
+        yield return new WaitUntil(() => topDiscard.GetComponent<DisplayCard>().Initialized);
         topDiscard.GetComponent<TopDiscardAnim>().StartAnim();
 
-        Card card = topDiscard.GetComponent<DisplayCard>().displayCard;
+        Card card = topDiscard.GetComponent<DisplayCard>().CardInfo;
         yield return new WaitForSeconds(0.5f);
 
         discardPile.Add(card);
-        if (card.color == CardColor.WILD) yield return OpenColorPicker();
+        if (card.color == CardColor.WILD)
+            yield return OpenColorPicker();
         if (card.num == CardNum.DRAW2) cardsToDraw += 2;
         if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.GetInstance().Skip = true;
 
@@ -171,19 +171,23 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    public IEnumerator PlayCard(GameObject card) {
+    public IEnumerator PlayCard(GameObject card)
+    {
         m_ReadyForNextMove = false;
-        Card realCard = card.GetComponent<DisplayCard>().displayCard;
+        Card realCard = card.GetComponent<DisplayCard>().CardInfo;
         playerClones.Remove(card);
         Debug.Log("[Player] Waiting for animation");
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
         yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
         Debug.Log("[Player] Animation finished");
-        if (realCard.color == CardColor.WILD) yield return OpenColorPicker();
+        if (realCard.color == CardColor.WILD)
+            yield return OpenColorPicker();
         else TurnSystem.GetInstance().IsWildTurn = false;
+        Debug.Log("Play Card Done");
     }
 
-    public IEnumerator PlayCardO(GameObject card) {
+    public IEnumerator PlayCardO(GameObject card)
+    {
         card.GetComponent<CardToHandO>().played = true;
         card.GetComponent<CardToHandO>().transform.rotation = Quaternion.identity;
         opponentClones.Remove(card);
@@ -224,7 +228,8 @@ public class PlayerDeck : MonoBehaviour
             if (cardsToDraw == 0) TurnSystem.GetInstance().EndPlayerTurn();
             else m_ReadyForNextMove = true;
         }
-        else {
+        else
+        {
             if (!isCardPlayable(deckCard)) TurnSystem.GetInstance().EndPlayerTurn();
             else m_ReadyForNextMove = true;
         }
@@ -251,8 +256,18 @@ public class PlayerDeck : MonoBehaviour
     {
         ColorPicker colorPicker = ColorPicker.GetInstance();
         colorPicker.PickColor();
-        Debug.Log("Waiting for color picker");
-        yield return new WaitUntil(() => colorPicker.pickedColor);
+        Debug.LogError("Waiting for color picker");
+        while (!colorPicker.pickedColor)
+        {
+            Debug.Log($"Color: {colorPicker.pickedColor}");
+            yield return new WaitForSeconds(0.5f);
+        }
+        Debug.Log($"Color: {colorPicker.pickedColor}");
+        // yield return new WaitUntil(() =>
+        // {
+        //     Debug.Log($"Color: {colorPicker.pickedColor}");
+        //     return colorPicker.pickedColor;
+        // });
         Debug.Log("Color Picker OK");
     }
 }

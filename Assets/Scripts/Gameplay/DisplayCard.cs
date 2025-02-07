@@ -5,45 +5,63 @@ using UnityEngine.EventSystems;
 
 public class DisplayCard : MonoBehaviour
 {
-    public bool initialized = false;
- 
-    public Card displayCard;
+    [SerializeField] private bool m_Initialized = false;
+    [SerializeField] private Card m_CardInfo;
+    [SerializeField] private CardNum m_Num;
+    [SerializeField] private CardColor m_Color;
+    [SerializeField] private Image m_Image;
+    [SerializeField] private Transform m_CardBack;
+    [Header("Read Only")]
+    [SerializeField] private bool m_IsCardBack;
+    [SerializeField] private GameObject m_HandOfPlayer;
+    [SerializeField] private int m_NumberOfCardsInDeck;
 
-    public CardNum num;
-    public CardColor color;
-    public Sprite spriteImage;
-
-    public Image image;
-
-    public bool cardBack;
-
-    public GameObject hand;
-    public int numberOfCardsInDeck;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public bool Initialized => m_Initialized;
+    public Card CardInfo
     {
-        numberOfCardsInDeck = PlayerDeck.deckSize;
-        initialized = true;
+        get => m_CardInfo;
+        set => m_CardInfo = value;
     }
 
+    public bool IsCardBack
+    {
+        get => m_IsCardBack;
+        set => m_IsCardBack = value;
+    }
 
-    // Update is called once per frame
+    void Start()
+    {
+        m_NumberOfCardsInDeck = PlayerDeck.deckSize;
+        m_Initialized = true;
+    }
+
     void Update()
     {
-        num = displayCard.num;
-        color = displayCard.color;
-        spriteImage = displayCard.spriteImage;
+        m_Num = CardInfo.num;
+        m_Color = CardInfo.color;
+        m_Image.sprite = CardInfo.sprite;
 
-        image.sprite = spriteImage == null ? Resources.Load<Sprite>("Cards/back") : spriteImage;
+        if (m_IsCardBack) HideCard();
+        else ShowCard();
 
-        if (this.tag == "Clone") {
-            displayCard = PlayerDeck.staticDeck[numberOfCardsInDeck - 1];
-            --numberOfCardsInDeck;
+        if (tag == "Clone")
+        {
+            m_CardInfo = PlayerDeck.staticDeck[m_NumberOfCardsInDeck - 1];
+            --m_NumberOfCardsInDeck;
             --PlayerDeck.deckSize;
             if (PlayerDeck.deckSize == 0) PlayerDeck.GetInstance().RefillDeck();
-            cardBack = false;
-            this.tag = "Untagged";
+            m_IsCardBack = false;
+            tag = "Untagged";
         }
+    }
+
+    public void ShowCard()
+    {
+        m_CardBack.gameObject.SetActive(false);
+    }
+
+    public void HideCard()
+    {
+        m_CardBack.gameObject.SetActive(true);
     }
 }

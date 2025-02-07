@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5096003897154970712}
   - component: {fileID: 3770294378537193179}
   - component: {fileID: 5208671039804772146}
-  - component: {fileID: 3514780042762550133}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -60,31 +59,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6827a23f8cc73445b5853c2d62e5d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 0
-  displayCard:
+  m_Initialized: 0
+  m_CardInfo:
     num: 0
     color: 0
-    spriteImage: {fileID: 0}
-  num: 0
-  color: 0
-  spriteImage: {fileID: 0}
-  image: {fileID: 1965732722980244532}
-  cardBack: 0
-  hand: {fileID: 0}
-  numberOfCardsInDeck: 0
---- !u!114 &3514780042762550133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2323694045155422108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccb098044730e43458c660c0c7c850ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardBack: {fileID: 4467981485967221261}
+    sprite: {fileID: 0}
+  m_Num: 0
+  m_Color: 0
+  m_Image: {fileID: 1965732722980244532}
+  m_CardBack: {fileID: 4029521998391347633}
+  m_IsCardBack: 0
+  m_HandOfPlayer: {fileID: 0}
+  m_NumberOfCardsInDeck: 0
 --- !u!1 &2876719988558997062
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,10 +246,5 @@ PrefabInstance:
 --- !u!224 &4029521998391347633 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4398009954159570605, guid: f4eaf36666daf9f4fad710d847fb8248, type: 3}
-  m_PrefabInstance: {fileID: 784578688005777180}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4467981485967221261 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3810633892221945105, guid: f4eaf36666daf9f4fad710d847fb8248, type: 3}
   m_PrefabInstance: {fileID: 784578688005777180}
   m_PrefabAsset: {fileID: 0}
