@@ -7,7 +7,6 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerDeck : MonoBehaviour
-
 {
     public static int deckSize;
     public List<Card> deck = new List<Card>();
@@ -58,8 +57,6 @@ public class PlayerDeck : MonoBehaviour
 
     public void Reset()
     {
-        TurnSystem.GetInstance().Reset();
-        ColorPicker.GetInstance().Reset();
         Destroy(topDiscard);
         discardPile.Clear();
         cardsToDraw = 0;

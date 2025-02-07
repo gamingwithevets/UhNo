@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
-
 
 public class TurnSystem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_TurnText;
     [SerializeField] private TextMeshProUGUI m_WildColorText;
-    [SerializeField] private GameObject m_YouWin;
-    [SerializeField] private GameObject m_YouLose;
 
     [Header("Read Only")]
     [SerializeField] private bool m_IsPlayerTurn;
@@ -69,8 +65,6 @@ public class TurnSystem : MonoBehaviour
     public void Reset()
     {
         m_IsTurnWarningActive = false;
-        m_YouWin.SetActive(false);
-        m_YouLose.SetActive(false);
         m_IsPlayerTurn = false;
         m_PlayerTurn = 0;
         m_OpponentTurn = 0;
@@ -123,9 +117,7 @@ public class TurnSystem : MonoBehaviour
         m_IsPlayerTurn = false;
         if (PlayerDeck.GetInstance().playerClones.Count == 0)
         {
-            m_YouWin.transform.SetAsLastSibling();
-
-            m_YouWin.SetActive(true);
+            ViewManager.Instance.ShowView(ViewId.WinView, false);
             return;
         }
         ++m_OpponentTurn;
@@ -137,8 +129,7 @@ public class TurnSystem : MonoBehaviour
         m_IsTurnWarningActive = false;
         if (PlayerDeck.GetInstance().opponentClones.Count == 0)
         {
-            m_YouLose.transform.SetAsLastSibling();
-            m_YouLose.SetActive(true);
+            ViewManager.Instance.ShowView(ViewId.LoseView, false);
             return;
         }
         ++m_PlayerTurn;
