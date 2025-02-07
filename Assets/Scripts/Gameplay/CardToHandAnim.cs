@@ -18,7 +18,8 @@ public class CardToHandAnim : MonoBehaviour
     public Vector3 targetPosition;
     public Transform originalParent;
 
-    public void Start() {
+    public void Start()
+    {
         m_Hand = GameObject.Find(m_HandName);
 
         initialPosition = m_DeckCard.transform.position;
@@ -27,8 +28,10 @@ public class CardToHandAnim : MonoBehaviour
         m_Initialized = true;
     }
 
-    public void Update() {
-        if (m_Animating) {
+    public void Update()
+    {
+        if (m_Animating)
+        {
             m_DeckCard.transform.SetParent(m_Hand.transform);
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_Hand.GetComponent<RectTransform>());
             targetPosition = m_DeckCard.transform.position;
@@ -37,11 +40,13 @@ public class CardToHandAnim : MonoBehaviour
         }
     }
 
-    public void StartCardToHandAnim() {
+    public void StartCardToHandAnim()
+    {
         StartCoroutine(AnimateObject());
     }
 
-    public void StartPlayAnim() {
+    public void StartPlayAnim()
+    {
         StartCoroutine(AnimateObject2());
     }
 
@@ -71,7 +76,7 @@ public class CardToHandAnim : MonoBehaviour
         initialPosition = m_DeckCard.transform.position;
         m_DeckCard.transform.SetParent(originalParent);
         targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        
+
         float timeElapsed = 0f;
 
         while (timeElapsed < animationDuration)
@@ -83,7 +88,7 @@ public class CardToHandAnim : MonoBehaviour
             yield return null;
         }
 
-        Card realCard = m_DeckCard.GetComponent<DisplayCard>().displayCard;
+        Card realCard = m_DeckCard.GetComponent<DisplayCard>().CardInfo;
         PlayerDeck.GetInstance().discardPile.Add(realCard);
         Destroy(m_DeckCard);
         m_Destroyed = true;
