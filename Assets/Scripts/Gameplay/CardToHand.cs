@@ -38,8 +38,7 @@ public class CardToHand : MonoBehaviour
                 int cardsToDraw = 0;
                 if (card.num == CardNum.DRAW2) cardsToDraw = 2;
                 else if (card.num == CardNum.DRAW4) cardsToDraw = 4;
-                yield return PlayerDeck.GetInstance().PlayCard(gameObject);
-                Debug.Log("[Player] PlayCard finished");
+                yield return PlayerDeck.GetInstance().PlayCard(gameObject, cardsToDraw);
                 TurnSystem.GetInstance().PlayerPlayed = true;
                 PlayerDeck.cardsToDraw += cardsToDraw;
                 TurnSystem.GetInstance().EndPlayerTurn();

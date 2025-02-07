@@ -10,7 +10,7 @@ public class DisplayCard : MonoBehaviour
     [SerializeField] private CardNum m_Num;
     [SerializeField] private CardColor m_Color;
     [SerializeField] private Image m_Image;
-    [SerializeField] private Transform m_CardBack;
+    [SerializeField] private GameObject m_CardBack;
     [Header("Read Only")]
     [SerializeField] private bool m_IsCardBack;
     [SerializeField] private GameObject m_HandOfPlayer;
@@ -57,11 +57,11 @@ public class DisplayCard : MonoBehaviour
 
     public void ShowCard()
     {
-        m_CardBack.gameObject.SetActive(false);
+        m_CardBack.SetActive(false);
     }
 
     public void HideCard()
     {
-        m_CardBack.gameObject.SetActive(true);
+        m_CardBack.SetActive(true);
     }
 }

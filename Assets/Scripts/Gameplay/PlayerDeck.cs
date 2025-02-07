@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -63,11 +64,9 @@ public class PlayerDeck : MonoBehaviour
         drawed = false;
         m_ReadyForNextMove = true;
         foreach (GameObject card in playerClones) Destroy(card);
-
         foreach (GameObject card in opponentClones) Destroy(card);
         playerClones.Clear();
         opponentClones.Clear();
-
         deck = new List<Card>(CardDatabase.cardList);
         deckSize = deck.Count;
         StartCoroutine(StartGame());
@@ -147,13 +146,10 @@ public class PlayerDeck : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         discardPile.Add(card);
-        if (card.color == CardColor.WILD)
-            yield return OpenColorPicker();
         if (card.num == CardNum.DRAW2) cardsToDraw += 2;
         if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.GetInstance().Skip = true;
 
-        TurnSystem turnSystem = GameObject.Find("TurnSystem").GetComponent<TurnSystem>();
-        turnSystem.EndOpponentTurn();
+        TurnSystem.GetInstance().EndOpponentTurn();
     }
 
 
@@ -171,7 +167,7 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    public IEnumerator PlayCard(GameObject card)
+    public IEnumerator PlayCard(GameObject card, int cardsToDraw)
     {
         m_ReadyForNextMove = false;
         Card realCard = card.GetComponent<DisplayCard>().CardInfo;
@@ -180,8 +176,8 @@ public class PlayerDeck : MonoBehaviour
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
         yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
         Debug.Log("[Player] Animation finished");
-        if (realCard.color == CardColor.WILD)
-            yield return OpenColorPicker();
+
+        if (realCard.color == CardColor.WILD) yield return OpenColorPicker(cardsToDraw);
         else TurnSystem.GetInstance().IsWildTurn = false;
         Debug.Log("Play Card Done");
     }
@@ -200,7 +196,8 @@ public class PlayerDeck : MonoBehaviour
 
     public bool isCardPlayable(Card card)
     {
-        return card.color == CardColor.WILD ||
+        return discardPile.Last().color == CardColor.WILD ||
+            card.color == CardColor.WILD ||
             card.color == discardPile.Last().color ||
             card.num == discardPile.Last().num;
     }
@@ -252,22 +249,10 @@ public class PlayerDeck : MonoBehaviour
         GameObject.Find("TurnSystem").GetComponent<TurnSystem>().SetTurnWarning("DECK REFILLED!");
     }
 
-    IEnumerator OpenColorPicker()
+    IEnumerator OpenColorPicker(int cardsToDraw = 0)
     {
         ColorPicker colorPicker = ColorPicker.GetInstance();
-        colorPicker.PickColor();
-        Debug.LogError("Waiting for color picker");
-        while (!colorPicker.pickedColor)
-        {
-            Debug.Log($"Color: {colorPicker.pickedColor}");
-            yield return new WaitForSeconds(0.5f);
-        }
-        Debug.Log($"Color: {colorPicker.pickedColor}");
-        // yield return new WaitUntil(() =>
-        // {
-        //     Debug.Log($"Color: {colorPicker.pickedColor}");
-        //     return colorPicker.pickedColor;
-        // });
-        Debug.Log("Color Picker OK");
+        colorPicker.PickColor(cardsToDraw);
+        yield return null;
     }
 }
