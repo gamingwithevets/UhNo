@@ -85,7 +85,6 @@ public class CardToHandAnim : MonoBehaviour
 
         Card realCard = m_DeckCard.GetComponent<DisplayCard>().displayCard;
         PlayerDeck.GetInstance().discardPile.Add(realCard);
-        if (realCard.num == CardNum.COLOR || realCard.num == CardNum.DRAW4) TurnSystem.GetInstance().SetWildTurn(realCard.color);
         Destroy(m_DeckCard);
         m_Destroyed = true;
     }
