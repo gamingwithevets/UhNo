@@ -5,13 +5,13 @@ using UnityEngine;
 public enum ViewId
 {
     MainMenuView,
-    GameplayView,
-    SettingsView,
-    GameOverView,
-    WinView,
-    PauseMenuView,
     ModeSelectView,
     HouseRuleSelectView,
+    GameplayView,
+    WinView,
+    LoseView,
+    SettingsView,
+    PauseMenuView,
     TutorialView,
     CreditsView,
     AchievementsView,
