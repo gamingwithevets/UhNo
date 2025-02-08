@@ -1,10 +1,10 @@
 {
     "items": [
         {
-            "Name": "Generals",
+            "Name": "General",
             "TextColor": {
                 "r": 1.0,
-                "g": 0.8117647171020508,
+                "g": 0.8117647767066956,
                 "b": 0.1568627506494522,
                 "a": 1.0
             },
@@ -89,7 +89,7 @@
             "FontSize": 12,
             "FontStyle": 1,
             "TextAnchor": 4,
-            "ImageType": 5
+            "ImageType": 3
         },
         {
             "Name": "UI",
@@ -183,10 +183,10 @@
             "ImageType": 5
         },
         {
-            "Name": "Enviroment",
+            "Name": "Environment",
             "TextColor": {
                 "r": 1.0,
-                "g": 0.8117647171020508,
+                "g": 0.8117647767066956,
                 "b": 0.1568627506494522,
                 "a": 1.0
             },
@@ -271,7 +271,7 @@
             "FontSize": 12,
             "FontStyle": 1,
             "TextAnchor": 4,
-            "ImageType": 5
+            "ImageType": 3
         },
         {
             "Name": "Core",
