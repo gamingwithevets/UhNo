@@ -30,12 +30,26 @@ public class PlayerDeck : MonoBehaviour
 
     public List<Card> discardPile = new List<Card>();
 
+    [SerializeField] private CardColor m_NextColor;
+    [SerializeField] private CardNum m_NextNum;
     public static int cardsToDraw = 0;
     public static bool drawed = false;
 
     [SerializeField] private bool m_ReadyForNextMove = true;
 
+    public CardColor NextColor
+    {
+        get => m_NextColor;
+        set => m_NextColor = value;
+    }
+    public CardNum NextNum
+    {
+        get => m_NextNum;
+        set => m_NextNum = value;
+    }
+
     public bool ReadyForNextMove
+
     {
         get => m_ReadyForNextMove;
         set => m_ReadyForNextMove = value;
@@ -149,9 +163,12 @@ public class PlayerDeck : MonoBehaviour
         if (card.num == CardNum.DRAW2) cardsToDraw += 2;
         if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.GetInstance().Skip = true;
 
-        TurnSystem.GetInstance().EndOpponentTurn();
-    }
+        NextColor = card.color;
+        NextNum = card.num;
 
+        TurnSystem.GetInstance().EndOpponentTurn();
+
+    }
 
     public void Shuffle()
     {
@@ -176,10 +193,10 @@ public class PlayerDeck : MonoBehaviour
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
         yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
         Debug.Log("[Player] Animation finished");
-
-        if (realCard.color == CardColor.WILD) yield return OpenColorPicker(cardsToDraw);
+        NextColor = realCard.color;
+        NextNum = realCard.num;
+        if (realCard.color == CardColor.WILD && playerClones.Count > 0) yield return OpenColorPicker(cardsToDraw);
         else TurnSystem.GetInstance().IsWildTurn = false;
-        Debug.Log("Play Card Done");
     }
 
     public IEnumerator PlayCardO(GameObject card)
@@ -191,15 +208,21 @@ public class PlayerDeck : MonoBehaviour
         card.GetComponent<CardToHandAnim>().StartPlayAnim();
         yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Destroyed);
         Debug.Log("[Opponent] Animation finished");
+        Card realCard = card.GetComponent<DisplayCard>().CardInfo;
+        NextColor = realCard.color;
+        NextNum = realCard.num;
         m_ReadyForNextMove = true;
     }
 
     public bool isCardPlayable(Card card)
     {
-        return discardPile.Last().color == CardColor.WILD ||
+        if (!TurnSystem.GetInstance().IsPlayerTurn) return false;
+        if (cardsToDraw > 0) return (card.num == CardNum.DRAW2 && (card.color == NextColor || NextNum == CardNum.DRAW2)) || card.num == CardNum.DRAW4;
+        return NextColor == CardColor.WILD ||
             card.color == CardColor.WILD ||
-            card.color == discardPile.Last().color ||
-            card.num == discardPile.Last().num;
+
+            card.color == NextColor ||
+            card.num == NextNum;
     }
 
     public void DrawCard()
