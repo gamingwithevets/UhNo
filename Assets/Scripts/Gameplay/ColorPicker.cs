@@ -35,7 +35,7 @@ public class ColorPicker : MonoBehaviour
         PlayerDeck playerDeck = PlayerDeck.GetInstance();
         TurnSystem turnSystem = TurnSystem.GetInstance();
         transform.GetChild(0).gameObject.SetActive(false);
-        playerDeck.discardPile.Last().color = (CardColor)color;
+        playerDeck.NextColor = (CardColor)color;
         turnSystem.SetWildTurn((CardColor)color);
         turnSystem.PlayerPlayed = true;
         PlayerDeck.cardsToDraw += cardsToDraw;
