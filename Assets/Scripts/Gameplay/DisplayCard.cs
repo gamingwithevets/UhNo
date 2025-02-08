@@ -23,6 +23,12 @@ public class DisplayCard : MonoBehaviour
         set => m_CardInfo = value;
     }
 
+    public Image Image
+    {
+        get => m_Image;
+        set => m_Image = value;
+    }
+
     public bool IsCardBack
     {
         get => m_IsCardBack;

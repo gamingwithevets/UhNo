@@ -27,3 +27,4 @@ public class CardToHandO : MonoBehaviour
         gameObject.GetComponent<DisplayCard>().IsCardBack = !played;
     }
 }
+

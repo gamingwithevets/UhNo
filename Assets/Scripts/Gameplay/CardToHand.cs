@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardToHand : MonoBehaviour
 {
@@ -16,7 +17,13 @@ public class CardToHand : MonoBehaviour
 
     void Update()
     {
-        gameObject.GetComponent<DisplayCard>().IsCardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
+        DisplayCard displayCard = gameObject.GetComponent<DisplayCard>();
+        displayCard.IsCardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
+        if (PlayerDeck.GetInstance().discardPile.Count > 0)
+        {
+            displayCard.Image.color = PlayerDeck.GetInstance().isCardPlayable(displayCard.CardInfo) ? new Color(1, 1, 1, 1) : new Color(0.5f, 0.5f, 0.5f, 1);
+            gameObject.GetComponent<Button>().interactable = PlayerDeck.GetInstance().isCardPlayable(displayCard.CardInfo);
+        }
     }
 
     IEnumerator StartAnim()
