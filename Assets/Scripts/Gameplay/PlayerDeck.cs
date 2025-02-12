@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class PlayerDeck : MonoBehaviour
 {
+    public static PlayerDeck Instance { get; private set; }
+
     public static int deckSize;
     public List<Card> deck = new List<Card>();
     public static List<Card> staticDeck = new List<Card>();
@@ -55,10 +57,9 @@ public class PlayerDeck : MonoBehaviour
         set => m_ReadyForNextMove = value;
     }
 
-    public static PlayerDeck GetInstance()
-    {
-        return GameObject.Find("PlayerDeck").GetComponent<PlayerDeck>();
-
+    void Awake() {
+        if (!Instance) Instance = this;
+        else Destroy(gameObject);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -161,12 +162,12 @@ public class PlayerDeck : MonoBehaviour
 
         discardPile.Add(card);
         if (card.num == CardNum.DRAW2) cardsToDraw += 2;
-        if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.GetInstance().Skip = true;
+        if (card.num == CardNum.SKIP || card.num == CardNum.REVERSE) TurnSystem.Instance.Skip = true;
 
         NextColor = card.color;
         NextNum = card.num;
 
-        TurnSystem.GetInstance().EndOpponentTurn();
+        TurnSystem.Instance.EndOpponentTurn();
 
     }
 
@@ -196,7 +197,7 @@ public class PlayerDeck : MonoBehaviour
         NextColor = realCard.color;
         NextNum = realCard.num;
         if (realCard.color == CardColor.WILD && playerClones.Count > 0) yield return OpenColorPicker(cardsToDraw);
-        else TurnSystem.GetInstance().IsWildTurn = false;
+        else TurnSystem.Instance.IsWildTurn = false;
     }
 
     public IEnumerator PlayCardO(GameObject card)
@@ -216,7 +217,7 @@ public class PlayerDeck : MonoBehaviour
 
     public bool isCardPlayable(Card card)
     {
-        if (!TurnSystem.GetInstance().IsPlayerTurn) return false;
+        if (!TurnSystem.Instance.IsPlayerTurn) return false;
         if (cardsToDraw > 0) return (card.num == CardNum.DRAW2 && (card.color == NextColor || NextNum == CardNum.DRAW2)) || card.num == CardNum.DRAW4;
         return NextColor == CardColor.WILD ||
             card.color == CardColor.WILD ||
@@ -235,7 +236,7 @@ public class PlayerDeck : MonoBehaviour
         m_ReadyForNextMove = false;
         Debug.Log("[Player] Drawing card");
         Card deckCard = deck[deckSize - 1];
-        if (TurnSystem.GetInstance().IsPlayerTurn && (cardsToDraw > 0 || (cardsToDraw == 0 && !drawed)))
+        if (TurnSystem.Instance.IsPlayerTurn && (cardsToDraw > 0 || (cardsToDraw == 0 && !drawed)))
         {
             GameObject card = Instantiate(cardToHand, transform.position, transform.rotation);
             yield return new WaitUntil(() => card.GetComponent<CardToHandAnim>().m_Animated);
@@ -245,12 +246,12 @@ public class PlayerDeck : MonoBehaviour
         if (cardsToDraw > 0)
         {
             --cardsToDraw;
-            if (cardsToDraw == 0) TurnSystem.GetInstance().EndPlayerTurn();
+            if (cardsToDraw == 0) TurnSystem.Instance.EndPlayerTurn();
             else m_ReadyForNextMove = true;
         }
         else
         {
-            if (!isCardPlayable(deckCard)) TurnSystem.GetInstance().EndPlayerTurn();
+            if (!isCardPlayable(deckCard)) TurnSystem.Instance.EndPlayerTurn();
             else m_ReadyForNextMove = true;
         }
     }
@@ -274,8 +275,8 @@ public class PlayerDeck : MonoBehaviour
 
     IEnumerator OpenColorPicker(int cardsToDraw = 0)
     {
-        ColorPicker colorPicker = ColorPicker.GetInstance();
-        colorPicker.PickColor(cardsToDraw);
+        if (GameManager.Instance.GetHouseRule("WildSample") && cardsToDraw == 0) ReadyForNextMove = true;
+        else ColorPicker.Instance.PickColor(cardsToDraw);
         yield return null;
     }
 }

@@ -10,7 +10,7 @@ public class CardToHandO : MonoBehaviour
     void Start()
     {
         transform.SetParent(FindFirstObjectByType<GameplayView>().transform);
-        transform.position = PlayerDeck.GetInstance().cardInDeckTop.transform.position;
+        transform.position = PlayerDeck.Instance.cardInDeckTop.transform.position;
         transform.rotation = Quaternion.Euler(0, 0, 180);
         StartCoroutine(StartAnim());
         initialized = true;
