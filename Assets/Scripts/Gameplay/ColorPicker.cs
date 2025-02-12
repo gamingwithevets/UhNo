@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Linq;
-using Mono.Cecil.Cil;
 using UnityEngine;
 
 public class ColorPicker : MonoBehaviour
 {
+    public static ColorPicker Instance { get; private set; }
 
     int cardsToDraw;
 
-    public static ColorPicker GetInstance()
-    {
-        return GameObject.Find("ColorPicker").GetComponent<ColorPicker>();
+    void Awake() {
+        if (!Instance) Instance = this;
+        else Destroy(gameObject);
     }
 
     public void Reset()
@@ -32,13 +32,11 @@ public class ColorPicker : MonoBehaviour
 
     public void Pick(int color)
     {
-        PlayerDeck playerDeck = PlayerDeck.GetInstance();
-        TurnSystem turnSystem = TurnSystem.GetInstance();
         transform.GetChild(0).gameObject.SetActive(false);
-        playerDeck.NextColor = (CardColor)color;
-        turnSystem.SetWildTurn((CardColor)color);
-        turnSystem.PlayerPlayed = true;
+        PlayerDeck.Instance.NextColor = (CardColor)color;
+        TurnSystem.Instance.SetWildTurn((CardColor)color);
+        TurnSystem.Instance.PlayerPlayed = true;
         PlayerDeck.cardsToDraw += cardsToDraw;
-        turnSystem.EndPlayerTurn();
+        TurnSystem.Instance.EndPlayerTurn();
     }
 }

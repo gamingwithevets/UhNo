@@ -89,7 +89,7 @@ public class CardToHandAnim : MonoBehaviour
         }
 
         Card realCard = m_DeckCard.GetComponent<DisplayCard>().CardInfo;
-        PlayerDeck.GetInstance().discardPile.Add(realCard);
+        PlayerDeck.Instance.discardPile.Add(realCard);
         Destroy(m_DeckCard);
         m_Destroyed = true;
     }

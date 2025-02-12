@@ -9,6 +9,6 @@ public class HouseRuleSelectView : View
 
     public void OnButtonBack()
     {
-        ViewManager.Instance.ShowView(ViewId.MainMenuView);
+        ViewManager.Instance.ShowView(ViewId.ModeSelectView);
     }
 }

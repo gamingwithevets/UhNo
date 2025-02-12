@@ -55,7 +55,7 @@ public class DisplayCard : MonoBehaviour
             m_CardInfo = PlayerDeck.staticDeck[m_NumberOfCardsInDeck - 1];
             --m_NumberOfCardsInDeck;
             --PlayerDeck.deckSize;
-            if (PlayerDeck.deckSize == 0) PlayerDeck.GetInstance().RefillDeck();
+            if (PlayerDeck.deckSize == 0) PlayerDeck.Instance.RefillDeck();
             m_IsCardBack = false;
             tag = "Untagged";
         }

@@ -10,7 +10,7 @@ public class CardToHand : MonoBehaviour
     void Start()
     {
         transform.SetParent(FindFirstObjectByType<GameplayView>().transform);
-        transform.position = PlayerDeck.GetInstance().cardInDeckTop.transform.position;
+        transform.position = PlayerDeck.Instance.cardInDeckTop.transform.position;
         StartCoroutine(StartAnim());
         initialized = true;
     }
@@ -19,10 +19,10 @@ public class CardToHand : MonoBehaviour
     {
         DisplayCard displayCard = gameObject.GetComponent<DisplayCard>();
         displayCard.IsCardBack = !gameObject.GetComponent<CardToHandAnim>().m_Animated;
-        if (PlayerDeck.GetInstance().discardPile.Count > 0)
+        if (PlayerDeck.Instance.discardPile.Count > 0)
         {
-            displayCard.Image.color = PlayerDeck.GetInstance().isCardPlayable(displayCard.CardInfo) ? new Color(1, 1, 1, 1) : new Color(0.5f, 0.5f, 0.5f, 1);
-            gameObject.GetComponent<Button>().interactable = PlayerDeck.GetInstance().isCardPlayable(displayCard.CardInfo);
+            displayCard.Image.color = PlayerDeck.Instance.isCardPlayable(displayCard.CardInfo) ? new Color(1, 1, 1, 1) : new Color(0.5f, 0.5f, 0.5f, 1);
+            gameObject.GetComponent<Button>().interactable = PlayerDeck.Instance.isCardPlayable(displayCard.CardInfo);
         }
     }
 
@@ -34,26 +34,26 @@ public class CardToHand : MonoBehaviour
 
     IEnumerator PlayCardCoroutine()
     {
-        if (!initialized || !PlayerDeck.GetInstance().ReadyForNextMove) yield break;
+        if (!initialized || !PlayerDeck.Instance.ReadyForNextMove) yield break;
         Card card = gameObject.GetComponent<DisplayCard>().CardInfo;
-        if (TurnSystem.GetInstance().IsPlayerTurn && (PlayerDeck.cardsToDraw == 0 || (PlayerDeck.cardsToDraw > 0 && !PlayerDeck.drawed && (card.num == CardNum.DRAW2 || card.num == CardNum.DRAW4))))
+        if (TurnSystem.Instance.IsPlayerTurn && (PlayerDeck.cardsToDraw == 0 || (PlayerDeck.cardsToDraw > 0 && !PlayerDeck.drawed && (card.num == CardNum.DRAW2 || card.num == CardNum.DRAW4))))
         {
-            Card topDiscard = PlayerDeck.GetInstance().discardPile.Last();
-            if (PlayerDeck.GetInstance().isCardPlayable(card))
+            Card topDiscard = PlayerDeck.Instance.discardPile.Last();
+            if (PlayerDeck.Instance.isCardPlayable(card))
             {
                 Debug.Log("[Player] Played card: " + card.color + " " + card.num + " on " + topDiscard.color + " " + topDiscard.num);
                 int cardsToDraw = 0;
                 if (card.num == CardNum.DRAW2) cardsToDraw = 2;
                 else if (card.num == CardNum.DRAW4) cardsToDraw = 4;
-                yield return PlayerDeck.GetInstance().PlayCard(gameObject, cardsToDraw);
-                TurnSystem.GetInstance().PlayerPlayed = true;
+                yield return PlayerDeck.Instance.PlayCard(gameObject, cardsToDraw);
+                TurnSystem.Instance.PlayerPlayed = true;
                 PlayerDeck.cardsToDraw += cardsToDraw;
-                TurnSystem.GetInstance().EndPlayerTurn();
+                TurnSystem.Instance.EndPlayerTurn();
             }
             else
             {
                 Debug.Log("[Player] Illegal move: " + card.color + " " + card.num + " on " + topDiscard.color + " " + topDiscard.num);
-                TurnSystem.GetInstance().SetTurnWarning("ILLEGAL MOVE!");
+                TurnSystem.Instance.SetTurnWarning("ILLEGAL MOVE!");
             }
         }
     }
