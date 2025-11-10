@@ -136,9 +136,9 @@ public class PlayerDeck : MonoBehaviour
         for (int i = 0; i < 7; i++)
         {
             yield return new WaitForSeconds(0.25f);
-            playerClones.Add(Instantiate(cardToHand, transform.position, transform.rotation));
+            playerClones.Add(Instantiate(cardToHand, gameplayView.position, gameplayView.rotation));
             yield return new WaitUntil(() => playerClones[i].GetComponent<CardToHand>().initialized);
-            opponentClones.Add(Instantiate(cardToHandO, transform.position, transform.rotation));
+            opponentClones.Add(Instantiate(cardToHandO, gameplayView.position, gameplayView.rotation));
             yield return new WaitUntil(() => opponentClones[i].GetComponent<CardToHandO>().initialized);
         }
 
@@ -218,7 +218,10 @@ public class PlayerDeck : MonoBehaviour
     public bool isCardPlayable(Card card)
     {
         if (!TurnSystem.Instance.IsPlayerTurn) return false;
-        if (cardsToDraw > 0) return (card.num == CardNum.DRAW2 && (card.color == NextColor || NextNum == CardNum.DRAW2)) || card.num == CardNum.DRAW4;
+        if (cardsToDraw > 0) {
+            if (drawed) return false;
+            return (card.num == CardNum.DRAW2 && (card.color == NextColor || NextNum == CardNum.DRAW2)) || card.num == CardNum.DRAW4;
+        }
         return NextColor == CardColor.WILD ||
             card.color == CardColor.WILD ||
 
@@ -247,13 +250,17 @@ public class PlayerDeck : MonoBehaviour
         if (cardsToDraw > 0)
         {
             --cardsToDraw;
-            if (cardsToDraw == 0) TurnSystem.Instance.EndPlayerTurn();
+            if (cardsToDraw == 0) {
+                TurnSystem.Instance.EndPlayerTurn();
+                drawed = false;
+            }
             else m_ReadyForNextMove = true;
         }
         else
         {
             if (!isCardPlayable(deckCard)) TurnSystem.Instance.EndPlayerTurn();
             else m_ReadyForNextMove = true;
+            drawed = false;
         }
     }
 
