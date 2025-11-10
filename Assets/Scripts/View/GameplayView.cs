@@ -6,4 +6,9 @@ public class GameplayView : View
     {
         GameManager.Instance.InitGame();
     }
+
+    public void OnButtonEnd()
+    {
+        ConfirmEnd.Instance.Show();
+    }
 }

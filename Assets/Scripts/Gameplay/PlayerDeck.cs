@@ -228,6 +228,7 @@ public class PlayerDeck : MonoBehaviour
 
     public void DrawCard()
     {
+        if (!TurnSystem.Instance.IsPlayerTurn) return;
         StartCoroutine(DrawCardCoroutine());
     }
 
