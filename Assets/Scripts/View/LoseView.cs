@@ -7,4 +7,9 @@ public class LoseView : View
         GameManager.Instance.ResetGame();
         BackView();
     }
+
+    public void OnButtonMenu()
+    {
+        ViewManager.Instance.ShowView(ViewId.MainMenuView);
+    }
 }

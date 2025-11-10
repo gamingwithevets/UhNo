@@ -128,8 +128,7 @@ public class TurnSystem : MonoBehaviour
         m_IsTurnWarningActive = false;
         if (PlayerDeck.Instance.opponentClones.Count == 0)
         {
-            m_TurnText.gameObject.SetActive(false);
-            ViewManager.Instance.ShowView(ViewId.LoseView, false);
+            Lose();
             return;
         }
         ++m_PlayerTurn;
@@ -147,6 +146,12 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
+    public void Lose()
+    {
+        m_TurnText.gameObject.SetActive(false);
+        ViewManager.Instance.ShowView(ViewId.LoseView, false);
+    }
+
     IEnumerator OpponentAI()
     {
         int cardsToDraw = 0;
@@ -160,7 +165,6 @@ public class TurnSystem : MonoBehaviour
                 PlayerDeck.Instance.ReadyForNextMove = true;
                 break;
             default:
-                if (topDiscard.num == CardNum.COLOR && GameManager.Instance.GetHouseRule("WildSample")) goto case CardNum.SKIP;
                 yield return new WaitForSeconds(0.5f);
                 if (PlayerDeck.cardsToDraw > 0)
                 {
@@ -186,8 +190,10 @@ public class TurnSystem : MonoBehaviour
                             if (GameManager.Instance.GetHouseRule("WildSample") && cardToPlay.GetComponent<DisplayCard>().CardInfo.num == CardNum.COLOR) m_Skip = true;
                             else
                             {
+
                                 PlayerDeck.Instance.NextColor = color;
                                 SetWildTurn(color);
+                                Debug.Log("[Opponent] Set next color to " + color);
                             }
                         }
                         else
@@ -222,7 +228,7 @@ public class TurnSystem : MonoBehaviour
                     foreach (GameObject card in PlayerDeck.Instance.opponentClones)
                     {
                         if (card.GetComponent<DisplayCard>().CardInfo.color == CardColor.WILD) wild = card;
-                        else if (card.GetComponent<DisplayCard>().CardInfo.color == topDiscard.color)
+                        else if (topDiscard.color == CardColor.WILD || card.GetComponent<DisplayCard>().CardInfo.color == topDiscard.color)
                         {
                             cardToPlay = card;
                             break;
@@ -254,6 +260,7 @@ public class TurnSystem : MonoBehaviour
                         {
                             PlayerDeck.Instance.NextColor = color;
                             SetWildTurn(color);
+                            Debug.Log("[Opponent] Set next color to " + color);
                         }
                         played = true;
                     }
@@ -273,6 +280,7 @@ public class TurnSystem : MonoBehaviour
                                 {
                                     PlayerDeck.Instance.NextColor = color;
                                     SetWildTurn(color);
+                                    Debug.Log("[Opponent] Set next color to " + color);
                                 }
                             }
                             else

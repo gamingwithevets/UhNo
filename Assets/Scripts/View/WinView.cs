@@ -7,4 +7,9 @@ public class WinView : View
         GameManager.Instance.ResetGame();
         BackView();
     }
+
+    public void OnButtonMenu()
+    {
+        ViewManager.Instance.ShowView(ViewId.MainMenuView);
+    }
 }
