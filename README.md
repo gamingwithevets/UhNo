@@ -36,6 +36,9 @@ FREEDOM FOR EVERYONE!!!!!!! WOOOOOOOOOO
 
 .
 
+## Notes
+This project currently uses version 1.3.0 of [Verpha's Hierarchy Designer](https://assetstore.unity.com/packages/tools/utilities/hierarchy-designer-273928?srsltid=AfmBOooUdm5xsL6IsrOmOIFOpS-pSSsFOBuKELTu6aSvwihv3FcexlRM), which is unfortunately paid. We are planning to switch to an open-source version in the future.
+
 ## Special Thanks
 - [Humble Toymaker](https://www.youtube.com/@tservedio) on YouTube, for his Multiplayer Card Game tutorials, which were used as a base for this project.
 - [Merle Robbins](https://en.wikipedia.org/wiki/Merle_Robbins) and [Mattel](https://mattel.com), for creating the original UNO card game.
