@@ -76,3 +76,5 @@ crashlytics-build.properties
 /Build/
 /.utmp/
 /.vscode/
+
+/Assets/Verpha/Hierarchy Designer

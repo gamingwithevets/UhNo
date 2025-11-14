@@ -46,9 +46,16 @@ public class CardToHand : MonoBehaviour
                 if (card.num == CardNum.DRAW2) cardsToDraw = 2;
                 else if (card.num == CardNum.DRAW4) cardsToDraw = 4;
                 yield return PlayerDeck.Instance.PlayCard(gameObject, cardsToDraw);
+                PlayerDeck.cardsToDrawAdd = cardsToDraw;
                 TurnSystem.Instance.PlayerPlayed = true;
-                PlayerDeck.cardsToDraw += cardsToDraw;
-                TurnSystem.Instance.EndPlayerTurn();
+                if (PlayerDeck.Instance.playerClones.Count == 1) {
+                    ButtonUhNo.Instance.ActivateUhNo();
+                    ButtonUhNo.Instance.RequestUhNoTimer(
+                        onTimeout: () => UhNoPopup.Instance.Show(),
+                        onSuccess: () => TurnSystem.Instance.EndPlayerTurn()
+                    );
+                }
+                else TurnSystem.Instance.EndPlayerTurn();
             }
             else
             {

@@ -35,9 +35,13 @@ public class PlayerDeck : MonoBehaviour
     [SerializeField] private CardColor m_NextColor;
     [SerializeField] private CardNum m_NextNum;
     public static int cardsToDraw = 0;
+    public static int cardsToDrawAdd = 0;
+    public static bool drawing = false;
     public static bool drawed = false;
 
     [SerializeField] private bool m_ReadyForNextMove = true;
+
+    public static bool uhNoActive = false;
 
     public CardColor NextColor
     {
@@ -218,6 +222,11 @@ public class PlayerDeck : MonoBehaviour
     public bool isCardPlayable(Card card)
     {
         if (!TurnSystem.Instance.IsPlayerTurn) return false;
+        return isCardPlayableO(card);
+    }
+
+    public bool isCardPlayableO(Card card)
+    {
         if (cardsToDraw > 0) {
             if (drawed) return false;
             return (card.num == CardNum.DRAW2 && (card.color == NextColor || NextNum == CardNum.DRAW2)) || card.num == CardNum.DRAW4;
@@ -231,12 +240,13 @@ public class PlayerDeck : MonoBehaviour
 
     public void DrawCard()
     {
-        if (!TurnSystem.Instance.IsPlayerTurn) return;
+        if (!TurnSystem.Instance.IsPlayerTurn || drawing) return;
         StartCoroutine(DrawCardCoroutine());
     }
 
     public IEnumerator DrawCardCoroutine()
     {
+        drawing = true;
         m_ReadyForNextMove = false;
         Debug.Log("[Player] Drawing card");
         Card deckCard = deck[deckSize - 1];
@@ -262,6 +272,7 @@ public class PlayerDeck : MonoBehaviour
             else m_ReadyForNextMove = true;
             drawed = false;
         }
+        drawing = false;
     }
 
     public IEnumerator DrawCardO()
